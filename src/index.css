@@ -1,0 +1,145 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.columns {
+  display: flex;
+  gap: 40px;
+  justify-content: center; /* Center the columns */
+  align-items: flex-start; /* Align to top */
+  margin: auto; /* Horizontal centering */
+  max-width: 100%; /* Prevent overflow */
+}
+
+
+.form-column,
+.list-column {
+  flex: 1;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #555;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+#cartList {
+  list-style: none;
+  padding: 0;
+}
+
+#cartList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+button {
+  background-color: #ff5f5f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#btn-submit {
+  background-color: #ff5f5f; /* Red color */
+  color: white;
+  border: none;
+  border-radius: 6px; /* Slightly rounded corners (not circular) */
+  padding: 10px 10px; /* Comfortable spacing */
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+  width: 100%; /* Fills the form width */
+  display: block; /* Ensures proper alignment */
+}
+
+#btn-submit:hover {
+  background-color: #e04e4e; /* Darker red on hover */
+}
+
+.list-items {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  width: 300px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+li {
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+li input[type="checkbox"] {
+  transform: scale(1.3);
+  margin-right: 10px;
+}
+
+.product-label {
+  font-size: 15px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+}
