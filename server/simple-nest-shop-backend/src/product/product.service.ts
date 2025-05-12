@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from '@prisma/client';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class ProductService {
@@ -44,6 +46,30 @@ export class ProductService {
       total,
       data: dataList,
     };
+  }
+
+  async update(data: UpdateProductDto, id: number): Promise<Product> {
+    const checkExistingData = await this.prismaService.product.findFirst({
+      where: {
+        product_name: data.product_name,
+      },
+    });
+
+    if (!checkExistingData) {
+      throw new HttpException('Data Not Found', 404);
+    }
+
+    return await this.prismaService.product.update({
+      where: {
+        id
+      },
+      data: {
+        product_name: data.product_name,
+        quantity: data.quantity,
+        price: data.price,
+        checked: data.checked
+      }
+    });
   }
 
   async destroy(id: number) {

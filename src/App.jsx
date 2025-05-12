@@ -3,10 +3,11 @@ import CardList from "./components/CartList";
 import FormProduct from "./components/FormProduct";
 import Header from "./components/Header";
 import { useEffect } from "react";
-import { destroy, getAll } from "./api/ItemList";
+import { destroy, getAll, update } from "./api/ItemList";
 
 export default function App() {
   const [items, setItems] = useState([]);
+  const [updateItem, setUpdateItem] = useState(null);
 
   useEffect(() => {
     getAll()
@@ -23,11 +24,41 @@ export default function App() {
 
   // console.log(items);
   function handleToggleItem(id) {
-    setItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
+    // setItems((items) =>
+    //   items.map((item) =>
+    //     item.id === id ? { ...item, checked: !item.checked } : item
+    //   )
+    // );
+    const itemToUpdate = items.find((item) => item.id === id);
+    const updatedChecked = !itemToUpdate.checked;
+
+    update(id, { checked: updatedChecked })
+      .then(() => {
+        setItems((items) =>
+          items.map((item) =>
+            item.id === id ? { ...item, checked: updatedChecked } : item
+          )
+        );
+      })
+      .catch((e) => console.error("Error updating items", e));
+  }
+
+  function handleUpdateItem(id, updatedData) {
+    const updatedItem = items.map((existingItem) =>
+      existingItem.id === id
+        ? { ...existingItem, ...updatedData }
+        : existingItem
     );
+    setItems(updatedItem);
+    update(id, updatedData)
+      .then((updatedItemFromAPI) => {
+        // Handle success (optional)
+        console.log("Item updated successfully", updatedItemFromAPI);
+        setUpdateItem(null); // Clear the form after update
+      })
+      .catch((error) => {
+        console.error("Error updating item", error);
+      });
   }
 
   function handleDeleteItem(id) {
@@ -41,9 +72,9 @@ export default function App() {
       });
   }
 
-  const totalPrice = items.reduce((total, item) => {
-    return total + item.quantity * item.price;
-  }, 0);
+  const totalPrice = items
+    .filter((item) => item.checked)
+    .reduce((total, item) => total + item.quantity * item.price, 0);
 
   const totalPriceInIDR = totalPrice.toLocaleString("id-ID", {
     style: "currency",
@@ -56,12 +87,17 @@ export default function App() {
       <div className="container">
         <Header />
         <div className="columns">
-          <FormProduct onAddItem={handleAddItem} />
+          <FormProduct
+            onAddItem={handleAddItem}
+            updateItem={updateItem}
+            onUpdateItem={handleUpdateItem}
+          />
           <div className="list-items">
             <CardList
               items={items}
               onToggleItem={handleToggleItem}
               onDeleteItem={handleDeleteItem}
+              onUpdateItem={(id, item) => setUpdateItem(item)}
             />
           </div>
         </div>

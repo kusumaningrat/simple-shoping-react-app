@@ -1,29 +1,45 @@
 import { useState } from "react";
 import { create } from "../api/ItemList";
+import { useEffect } from "react";
 
-export default function FormProduct({ onAddItem }) {
+export default function FormProduct({ onAddItem, updateItem, onUpdateItem }) {
   const [product_name, setProductName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState("");
+
+  useEffect(() => {
+    if (updateItem) {
+      setProductName(updateItem.product_name);
+      setQuantity(updateItem.quantity);
+      setPrice(updateItem.price);
+    }
+  }, [updateItem]);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     if (!product_name || quantity < 0) return;
 
-
     const newItem = { product_name, quantity, price, checked: false };
-    try {
-      const addedItem = await create(newItem);
-      onAddItem(addedItem);
 
-      // console.log(newItem);
+    if (updateItem) {
+      onUpdateItem(updateItem.id, { product_name, quantity, price });
+      setProductName("")
+      setQuantity(0)
+      setPrice("");
+    } else {
+      try {
+        const addedItem = await create(newItem);
+        onAddItem(addedItem);
 
-      setProductName("");
-      setQuantity(0);
-      setPrice()
-    } catch (e) {
-      console.error("Error creating new item", e);
+        // console.log(newItem);
+
+        setProductName("");
+        setQuantity(0);
+        setPrice();
+      } catch (e) {
+        console.error("Error creating new item", e);
+      }
     }
   }
 
@@ -62,7 +78,7 @@ export default function FormProduct({ onAddItem }) {
           required
         />
         <button type="submit" id="btn-submit">
-          Add to Cart
+          {updateItem ? "Update Item" : "Add to Cart"}
         </button>
       </form>
     </>

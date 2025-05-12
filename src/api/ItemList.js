@@ -4,9 +4,15 @@ export const getAll = async () => {
   const response = await api.get('/product')
   return response.data.data.data
 }
+
 export const create = async (dataProduct) => {
   const response = await api.post('/product', dataProduct)
   return response.data.data
+}
+
+export const update  = async (id, data) => {
+  const response = await api.put(`/product/${id}`, data)
+  return response.data.data.data;
 }
 
 export const destroy  = async (id) => {

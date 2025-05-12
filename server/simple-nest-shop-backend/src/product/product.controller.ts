@@ -1,8 +1,9 @@
-import { Controller, Post, Body, HttpCode, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, Get, Param, Delete, Put } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { SuccessResponseWith } from 'src/common/response';
 import { Product } from '@prisma/client';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('/api/v1/product')
 export class ProductController {
@@ -20,6 +21,13 @@ export class ProductController {
   async getAll() {
     const product = await this.productService.getAll();
     return SuccessResponseWith('Products loaded successfully', product);
+  }
+
+  @Put(':id')
+  @HttpCode(200)
+  async update(@Body() data: UpdateProductDto, @Param('id') id: string) {
+    const product = await this.productService.update(data, parseInt(id));
+    return SuccessResponseWith('Product updated successfully', product);
   }
 
   @Delete(':id')
