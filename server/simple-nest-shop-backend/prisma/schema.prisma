@@ -17,7 +17,7 @@ model Product {
   id           Int     @id @default(autoincrement())
   product_name String  @db.VarChar(100)
   quantity     Int     @db.Integer()
-  price        String  @db.VarChar(100)
+  price        Int     @db.Integer()
   checked      Boolean @default(false)
 
   @@map("products")

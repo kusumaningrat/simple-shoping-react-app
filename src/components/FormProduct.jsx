@@ -1,22 +1,30 @@
 import { useState } from "react";
+import { create } from "../api/ItemList";
 
 export default function FormProduct({ onAddItem }) {
-  const [product_name, setProductName] = useState('');
+  const [product_name, setProductName] = useState("");
   const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!product_name) return;
+    if (!product_name || quantity < 0) return;
 
-    const id = Date.now();
-    const newItem = { product_name, quantity, checked: false, id };
-    onAddItem(newItem);
 
-    // console.log(newItem);
+    const newItem = { product_name, quantity, price, checked: false };
+    try {
+      const addedItem = await create(newItem);
+      onAddItem(addedItem);
 
-    setProductName('');
-    setQuantity(0);
+      // console.log(newItem);
+
+      setProductName("");
+      setQuantity(0);
+      setPrice()
+    } catch (e) {
+      console.error("Error creating new item", e);
+    }
   }
 
   return (
@@ -41,6 +49,16 @@ export default function FormProduct({ onAddItem }) {
           min="1"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
+          required
+        />
+        <label htmlFor="price">Price:</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          min="1"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
           required
         />
         <button type="submit" id="btn-submit">

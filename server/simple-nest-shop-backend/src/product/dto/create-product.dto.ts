@@ -10,7 +10,7 @@ export class CreateProductDto {
 
     @IsString()
     @MaxLength(255)
-    price: string;
+    price: number;
 
     @IsBoolean()
     checked: boolean;
