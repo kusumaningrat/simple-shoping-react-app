@@ -20,7 +20,12 @@ export default function FormProduct({ onAddItem, updateItem, onUpdateItem }) {
 
     if (!product_name || quantity < 0) return;
 
-    const newItem = { product_name, quantity, price, checked: false };
+    const newItem = { 
+      product_name, 
+      quantity: Number(quantity), 
+      price: Number(price), 
+      checked: false 
+    };
 
     if (updateItem) {
       onUpdateItem(updateItem.id, { product_name, quantity, price });
@@ -29,14 +34,14 @@ export default function FormProduct({ onAddItem, updateItem, onUpdateItem }) {
       setPrice("");
     } else {
       try {
-        const addedItem = await create(newItem);
-        onAddItem(addedItem);
+        // const addedItem = await create(newItem);
+        onAddItem(newItem);
 
         // console.log(newItem);
 
         setProductName("");
         setQuantity(0);
-        setPrice();
+        setPrice("");
       } catch (e) {
         console.error("Error creating new item", e);
       }

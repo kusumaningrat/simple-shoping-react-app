@@ -3,7 +3,7 @@ import CardList from "./components/CartList";
 import FormProduct from "./components/FormProduct";
 import Header from "./components/Header";
 import { useEffect } from "react";
-import { destroy, getAll, update } from "./api/ItemList";
+import { create, destroy, getAll, update } from "./api/ItemList";
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -19,7 +19,10 @@ export default function App() {
   }, []);
 
   function handleAddItem(item) {
-    setItems([...items, item]);
+    // setItems([...items, item]);
+    create(item).then((newItem) => {
+      setItems((prevItem) => [...prevItem, newItem]);
+    });
   }
 
   // console.log(items);
